@@ -1,0 +1,9 @@
+﻿@model JustPhotoGallery.Web.Models.PagedViewModel<JustPhotoGallery.Web.Models.PhotoViewModel>
+
+@foreach (var photo in Model.Data)
+{
+    <div class="col-md-6">
+        @Html.Partial("_ShowPhotoPartial", photo)
+    </div>
+}
+<div id="page" class="hidden" data-page="@Model.CurrentPage"></div>

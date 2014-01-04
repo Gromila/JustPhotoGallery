@@ -1,0 +1,8 @@
+﻿@model IEnumerable<JustPhotoGallery.Domain.Entities.Vote>
+           
+@foreach (var vote in Model)
+{
+    <div class="list-group-item">
+        @vote.Value for <a href="@Url.Action("Show", "Photo", new { id = vote.PictureId})">@Html.Action("GetPhotoTitle", "Photo", new { photoId = vote.PictureId })</a>
+    </div>
+}

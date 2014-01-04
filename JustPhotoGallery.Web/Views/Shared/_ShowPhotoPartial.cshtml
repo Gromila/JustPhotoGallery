@@ -1,0 +1,12 @@
+﻿@using JustPhotoGallery.Web.Helpers
+@model JustPhotoGallery.Web.Models.PhotoViewModel
+
+<a href="@Url.Action("Show", "Photo", new { id = Model.Picture.Id })" class="thumbnail" style="text-align: center; height: 290px;">
+    <div style="width:200px; height:120px; margin: 10px; text-align: center;">
+        <img src="@Model.ThumbFilePath" style="max-width: 200px; max-height: 150px;" />
+    </div>
+    <div class="caption">
+        <hr />
+        <h3>@Model.Picture.Title</h3>
+    </div>
+</a>

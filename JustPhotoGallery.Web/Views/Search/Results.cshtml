@@ -1,0 +1,9 @@
+﻿@model IEnumerable<JustPhotoGallery.Web.Models.PhotoViewModel>
+@{
+    ViewBag.Title = GlobalRes.Results;
+}
+
+
+<div class="col-md-12">
+    @Html.Partial("Shared/_TagPhotosPartial", Model)
+</div>

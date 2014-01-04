@@ -1,0 +1,169 @@
+﻿@using JustPhotoGallery.Domain.Entities
+@using JustPhotoGallery.Web.Helpers
+@using Microsoft.AspNet.Identity
+@model JustPhotoGallery.Web.Models.PhotoViewModel
+
+@{
+    ViewBag.Title = Model.Picture.Title;
+    ViewBag.PageHeader = Model.Picture.Title;
+}
+
+@section header
+{
+    <style>
+        img {
+            max-width: 1000px;
+        }
+    </style>
+}
+
+<div class="col-md-12">
+    <div class="photo">
+        <img id="single-photo" src="@Model.FilePath" />
+    </div>
+
+    <div class="photo-description">
+        <div class="photo-title">
+            <p>
+                <h3>@Model.Picture.Title</h3>
+                @if (User.Identity.GetUserId() == Model.Picture.UserId)
+                {
+                    @Html.TextBox("title", Model.Picture.Title, new { @class = "form-control", style = "display: none; width:200px;" })
+                    <button class="btn btn-default" id="save-title" style="display: none;"><span class="glyphicon glyphicon-save"></span></button>
+                    <button class="btn btn-default" id="edit-title"><span class="glyphicon glyphicon-edit"></span></button>
+                }
+            </p>
+        </div>
+        <div id="photo-description">
+            <blockquote>
+                <p>@Model.Picture.Description</p>
+                @if (User.Identity.GetUserId() == Model.Picture.UserId)
+                {
+                    @Html.TextBox("description", Model.Picture.Description, new { @class = "form-control", style = "display: none; width:200px;" })
+                    <button class="btn btn-default" id="save-description" style="display: none;"><span class="glyphicon glyphicon-save"></span></button>
+                    <button class="btn btn-default" id="edit-description"><span class="glyphicon glyphicon-edit"></span></button>
+                }
+            </blockquote>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                @foreach (var tag in Model.Picture.Tags)
+                {
+                    <span class="badge">@Html.ActionLink(String.Format(GlobalRes.Tag, tag.Content, tag.Pictures.Count), "SearchByTag", "Search", new { tagId = tag.Id }, null)</span>
+                }
+            </div>
+            <div class="col-md-2 voting">
+                <button id="votedown" type="button" class="btn btn-danger vote @ViewBag.Disabled"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+                <a href="#" class="votes">@Model.VotesValue</a>
+                <button id="voteup" type="button" class="btn btn-success vote @ViewBag.Disabled"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+            </div>
+            <div class="col-md-5">
+                Author: @Html.Action("GetAuthorName", "Photo", new { pictureId = Model.Picture.Id })
+                @if (Model.Picture.UserId == User.Identity.GetUserId())
+                {
+                    <p class="pull-right">
+                        @Html.NewDropDownListFor(a => a.Picture.Filter, typeof(FilterType), Model.Picture.Filter)
+                        <button class="btn btn-primary" id="filtering"><span class="glyphicon glyphicon-edit"></span> @GlobalRes.Edit</button>
+                        <a href="@Url.Action("Delete", "Photo", new { id = @Model.Picture.Id })" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> @GlobalRes.Delete</a>
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('button#voteup').click(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("VoteUp", "Vote")",
+                    data: "id=@Model.Picture.Id",
+                    success: function(data) {
+                        $(".votes").text(data);
+                    }
+                });
+            });
+
+            $('button#votedown').click(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("VoteDown", "Vote")",
+                    data: "id=@Model.Picture.Id",
+                    success: function(data) {
+                        $(".votes").text(data);
+                    }
+                });
+            });
+
+            $('#edit-title').click(function() {
+                $('.photo-title h3').hide();
+                $('#edit-title').hide();
+                $('#save-title').show();
+                $('#title').show();
+            });
+
+            $('#save-title').click(function() {
+                var title = $('#title').val();
+                if (title) {
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("EditTitle", "Photo", new { pictureId = Model.Picture.Id })",
+                        data: "title=" + title,
+                        success: function(data) {
+                            $('.photo-title h3').show();
+                            $('#edit-title').show();
+                            $('#save-title').hide();
+                            $('#title').hide();
+                            $('.photo-title h3').text(data);
+                            $('.header h1').text(data);
+                        }    
+                    });
+                }
+            });
+
+            $('#edit-description').click(function() {
+                $('#photo-description p').hide();
+                $('#edit-description').hide();
+                $('#save-description').show();
+                $('#description').show();
+            });
+
+            $('#save-description').click(function () {
+                var description = $('#description').val();
+                if (description) {
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("EditDescription", "Photo", new { pictureId = Model.Picture.Id })",
+                        data: "description=" + description,
+                    success: function(data) {
+                        $('#photo-description p').show();
+                        $('#edit-description').show();
+                        $('#save-description').hide();
+                        $('#description').hide();
+                        $('#photo-description p').text(data);
+                    }    
+                });
+            }
+            });
+
+            $('#filtering').click(function() {
+                var filter = $('#Picture_Filter').val();
+                if (filter) {
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("ApplyFilter", "Photo", new {pictureId = Model.Picture.Id})",
+                        data: "filter=" + filter,
+                        success: function(data) {
+                            $("img#single-photo").attr("src", data);
+                        }
+                    });
+                } else {
+                    alert('Choose filter at first!');
+                }
+            });
+        });
+    </script>
+}

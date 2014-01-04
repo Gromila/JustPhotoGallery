@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="col-md-4">
+    @Html.Action("DisplayTagsCloud")
+</div>
+
+<div class="col-md-7">
+    @Html.Action("DisplayTop", "Photo", new { number = 20})    
+    @Html.ActionLink("Add photo", "Upload", "Photo", null, new { @class = "btn btn-default" })
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/jquery.blueimp-gallery.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-image-gallery.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/photos.controls.js"></script>
+}

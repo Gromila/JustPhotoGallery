@@ -1,0 +1,32 @@
+﻿@model JustPhotoGallery.Domain.Entities.Picture
+
+@{
+    ViewBag.Title = "Upload Picture";
+}
+
+<div class="col-md-11">
+    @using (Html.BeginForm("Upload", "Photo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(a => a.Title)
+            @Html.TextBoxFor(a => a.Title, new { @class = "form-control", placeholder = "Enter title here"})
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(a => a.Description)
+            @Html.TextAreaFor(a => a.Description, 3, 20, new { @class = "form-control", placeholder = "Enter description to photo here" })
+        </div>
+        
+        <div class="form-group">
+            <label for="tags">Tags: </label>
+            @Html.TextBox("tagsString", null, new { @class = "form-control", placeholder = "Type tags throught commas (,)"})
+        </div>
+        
+        <div class="form-group">
+            <label for="file">Upload Image:</label>
+            <input type="file" class="btn btn-default" name="file" id="file" />
+            <input type="submit" class="btn btn-default" value="Submit" />
+        </div>
+    }
+</div>
+

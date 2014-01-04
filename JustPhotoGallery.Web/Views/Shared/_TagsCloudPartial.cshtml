@@ -1,0 +1,8 @@
+﻿@model List<JustPhotoGallery.Domain.Entities.Tag>
+    
+<div id="taglist" class="taglist">
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        <a href="@Url.Action("SearchByTag", "Search", new { tagId = Model[i].Id })" class="tag @String.Format("tag{0}", i/2)">@String.Format("{0} [{1}]", Model[i].Content, Model[i].Pictures.Count)</a>
+    }
+</div>

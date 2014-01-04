@@ -1,0 +1,6 @@
+﻿@model IEnumerable<JustPhotoGallery.Domain.Entities.User>
+
+@foreach (var user in Model)
+{
+    @Html.ActionLink(user.UserName, "Profile", "Photo", new {username = user.UserName}, new {@class = "list-group-item"})
+}

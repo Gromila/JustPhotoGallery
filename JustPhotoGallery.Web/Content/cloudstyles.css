@@ -1,0 +1,76 @@
+/*#main{margin:0px auto; padding:0px; width:900px;position:relative;}*/
+pre{
+	background:#F7F7F9;padding:10px;
+	border: 1px solid #E1E1E8;
+	border-radius: 3px;
+	color: #222222;
+}
+#ads1{
+	position:absolute;
+	right:0px;
+	top:50px;
+	/*border: 1px solid #E1E1E8;*/
+}
+#ads2{
+	position:absolute;
+	left:-180px;
+	top:0px;
+	/*border: 1px solid #E1E1E8;*/
+}
+#langbox{
+	position:absolute;
+	top:10px;
+	right:10px;
+}
+div.taglist{text-align: justify; font-size:13px; width:180px;height:160px;}
+div.taglist a:hover{color:#888 !important;}
+.taglist a {
+/*border:1px solid #ccc;*/
+font-weight: 700;
+text-decoration: none;
+vertical-align: bottom;
+}
+.taglist a.tag0 { 
+font-size: 77%;
+color: #0485bd;
+}
+.taglist a.tag1 { 
+font-size: 85%;
+color: #F7C954;
+}
+.taglist a.tag2 { 
+font-size: 93%;
+color: #0373a3;
+}
+.taglist a.tag3 { 
+font-size: 100%;
+color: #ffa500;
+}
+.taglist a.tag4 { 
+font-size: 116%;
+color: #3da1cc;
+}
+.taglist a.tag5 { 
+font-size: 131%;
+color: #FFAD00;
+}
+.taglist a.tag6 { 
+font-size: 153.5%;
+color: #2488b3;
+}
+.taglist a.tag7 { 
+font-size: 174%;
+color: #FD9332;
+}
+.taglist a.tag8 { 
+font-size: 182%;
+color: #0f7099;
+}
+.taglist a.tag9 { 
+font-size: 197%;
+color: #FF7203;
+}
+.taglist a.tag10 { 
+font-size: 205%;
+color: #02587e;
+}

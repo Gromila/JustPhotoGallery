@@ -1,0 +1,148 @@
+﻿@using JustPhotoGallery.Domain.Entities
+@using JustPhotoGallery.Web.Helpers
+@model JustPhotoGallery.Domain.Entities.Picture
+
+@{
+    ViewBag.Title = GlobalRes.UploadTitle;
+    ViewBag.PageHeader = GlobalRes.UploadHeader;
+}
+
+@section header
+{
+    <style>
+        .prev_container {
+            overflow: auto;
+        }
+
+        .prev_thumb {
+            margin: 10px;
+            height: 450px;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="~/Content/tagit.css"/>
+}
+
+<div class="col-md-4">
+    @using (Html.BeginForm("Upload", "Photo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.LabelFor(a => a.Title)
+            @Html.TextBoxFor(a => a.Title, new { @class = "form-control", placeholder = @GlobalRes.TitlePlaceholder})
+            @Html.ValidationMessageFor(a => a.Title)
+        </div>
+            
+        <div class="form-group">
+            @Html.LabelFor(a => a.Description)
+            @Html.TextAreaFor(a => a.Description, 3, 20, new { @class = "form-control", placeholder = @GlobalRes.DescriptionPlaceholder })
+            @Html.ValidationMessageFor(a => a.Description)
+        </div>
+        
+        <div class="form-group">
+            <label for="tagsString">@GlobalRes.Tags: </label>
+            @Html.TextBox("tagsString", null, new { @class = "form-control", placeholder = @GlobalRes.TagPlaceholder })
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(a => a.Filter)
+            @Html.NewDropDownListFor(a => a.Filter, typeof(FilterType), Model.Filter)
+        </div>
+        
+        <div class="form-group">
+            <label for="file">@GlobalRes.UploadImage:</label>
+            <div id="uploadError" class="input-validation-error"></div>
+            <input type="file" class="btn btn-primary file" name="file" id="file" multiple />
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary disabled" value="@GlobalRes.Submit" />
+        </div>
+    }
+</div>
+<div class="col-md-8">
+    <div class="photo-description">
+        <h3>@GlobalRes.Preview</h3>
+        <div id="prev_file" class="prev-container"></div>
+    </div>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundle/imagepreview")
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.file').preimage();
+        })
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select#Filter').change(function() {
+                var value = $('select#Filter').val();
+                switch (value) {
+                    case "None":
+                        $('#prev_file').removeClass('grayscale').removeClass('sepia').removeClass('contrast');
+                        break;
+                    case "BlackWhite":
+                        $('#prev_file').removeClass('contrast').removeClass('sepia').addClass('grayscale');
+                        break;
+                    case "Sepia":
+                        $('#prev_file').removeClass('grayscale').removeClass('contrast').addClass('sepia');
+                        break;
+                    case "Autocontrast":
+                        $('#prev_file').removeClass('grayscale').removeClass('sepia').addClass('contrast');
+                        break;
+                }
+            });
+
+            $('input[type=file]').change(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("CheckExtensionAction", "Photo")",
+                    data: "filepath=" + $('input[type=file]').val(),
+                    success: function(data) {
+                        if (data === "true") {
+                            $('input[type=submit]').removeClass('disabled');
+                        } else {
+                            $('#uploadError').text("Incorrect file extension");
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            function split(val) {
+                return val.split(/,\s*/);
+            }
+
+            $("#tagsString").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: "@Url.Action("SearchAutoCompleter", "Search")",
+                        type: "POST",
+                        dataType: "json",
+                        data: { term: request.term },
+                        success: function(data) {
+                            response($.map(data, function(item) {
+                                return { label: item, value: item };
+                            }));
+                        }
+                    });
+                },
+                select: function(event, ui) {
+                    var terms = split(this.value);
+                    terms.pop();
+                    terms.push(ui.item.value);
+                    terms.push("");
+                    this.value = terms.join(", ");
+                    return false;
+                },
+                minLength: 0
+            });
+        });
+    </script>
+}

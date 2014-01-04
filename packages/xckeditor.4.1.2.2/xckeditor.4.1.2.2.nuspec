@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>xckeditor</id>
+    <version>4.1.2.2</version>
+    <title>X.CKEditor</title>
+    <authors>Ernado</authors>
+    <owners>Ernado</owners>
+    <projectUrl>https://github.com/ernado-x/X.CKEditor</projectUrl>
+    <iconUrl>http://server7.agi.net.ua/x.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>CKEditor is a ready-for-use HTML text editor designed to simplify web content creation. It's a WYSIWYG editor that brings common word processor features directly to your web pages. Enhance your website experience with our community maintained editor.</description>
+    <tags>html editor wysiwyg</tags>
+  </metadata>
+</package>

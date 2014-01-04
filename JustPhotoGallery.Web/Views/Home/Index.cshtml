@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "JustPhotoGallery";
+    ViewBag.PageHeader = "Welcome to JustPhotoGallery";
+}
+
+@section header{
+    <link rel="stylesheet" type="text/css" href="~/Content/jquery.xdcloudtags.css"/>
+    <link rel="stylesheet" type="text/css" href="~/Content/cloudstyles.css" />
+}
+
+<div class="col-md-3">
+    @Html.Action("DisplayTagsCloud")
+</div>
+
+<div class="col-md-9">
+    <div class="panel panel-primary">
+        <div class="panel-body" id="photos">
+            @Html.Action("DisplayTop", "Photo", new { page = 1 })
+        </div>
+        <div class="panel-footer" style="text-align: center;">
+            <button class="btn btn-primary" style="width: 300px; margin: 20px;" id="scroll">@GlobalRes.Load</button>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/tagcloud")
+    <script type="text/javascript">
+        function getPhotos(page) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("DisplayTop", "Photo")',
+                data: 'page=' + page,
+                dataType: "html",
+                success: function(result) {
+                    var domElement = $(result);
+                    $('#photos').animate({ height: '+=260px' }, 500);
+                    $('#photos').append(domElement);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $("#taglist").xdCloudTags({ save: true, invert: true });
+
+            $("#scroll").click(function() {
+                var page = $('.row #page').last().data('page') + 1;
+                if (page > 0) {
+                    getPhotos(page);
+                } else {
+                    $('#scroll').addClass('disabled').removeClass('btn-primary').addClass('btn-danger');
+                }
+            });
+
+            $("body").scroll(function() {
+                alert("Scrolling");
+                if (document.body.scrollHeight - document.body.scrollTop < 50) {
+                    alert('ololo');
+                    var page = $("#page").last().data("page") + 1;
+                    getPhotos(page);
+                }
+            });
+        });
+    </script>
+}

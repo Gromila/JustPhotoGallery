@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("header", required: false)
+</head>
+    <body>
+        @Html.Partial("_NavigationBarPartial")
+        <div class="container main-container">
+            <div class="container">
+                <div class="page-header header">
+                    <h1>@ViewBag.PageHeader</h1>
+                </div>
+                <div class="body-content">
+                    @RenderBody()
+                </div>
+            </div>
+            <div class="container panel panel-primary footer">
+                <div class="panel-body">
+                    ©@DateTime.Now.Year
+                    <div class="pull-right">
+                        @GlobalRes.PoweredBy
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/search")
+        <script type="text/javascript" src="~/Scripts/jquery-ui.js"></script>
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

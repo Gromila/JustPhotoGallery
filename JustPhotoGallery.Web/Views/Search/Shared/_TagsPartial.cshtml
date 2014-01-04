@@ -1,0 +1,6 @@
+﻿@model IEnumerable<JustPhotoGallery.Domain.Entities.Tag>
+
+@foreach (var tag in Model)
+{
+    @Html.ActionLink(String.Format(GlobalRes.Tag, tag.Content, tag.Pictures.Count), "SearchByTag", "Search", new {tagId = tag.Id}, new {@class = "list-group-item"})
+}

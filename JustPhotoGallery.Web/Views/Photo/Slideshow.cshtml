@@ -1,0 +1,88 @@
+﻿@using Microsoft.Ajax.Utilities
+@model IEnumerable<JustPhotoGallery.Web.Models.PhotoViewModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Slideshow</title>
+        <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.css"/>
+        <link rel="stylesheet" type="text/css" href="~/Content/photos.gallery.css"/>
+    </head>
+    <body>
+        <div id="close" class="close">
+            <a href="@Url.Action("CloseSlideshow", "Photo", new { url = ViewBag.Url })" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Close</a>
+        </div>
+        <div id="playstop" class="ss-controls">
+            <button class="btn btn-default" id="play" value="play" style="display: none;"><span class="glyphicon glyphicon-play"></span> @GlobalRes.Play</button>
+            <button class="btn btn-default" id="stop" value="stop"><span class="glyphicon glyphicon-pause"></span> @GlobalRes.Stop</button>
+        </div>
+        <div id="bg">
+            <a href="#" class="nextImageBtn" title="next"></a>
+            <a href="#" class="prevImageBtn" title="previous"></a>
+            <img src="@Model.ToList()[0].FilePath" width="1680" height="1050" alt="Denebola" title="Denebola" id="bgimg" />
+        </div>
+        <div id="preloader">
+            <img src="~/Content/images/gallery/ajax-loader_dark.gif" width="32" height="32" />
+        </div>
+        <div id="img_title"></div>
+        <div id="thumbnails_wrapper">
+            <div id="outer_container">
+                <div class="thumbScroller">
+                    <div class="container">
+                        @foreach (var photo in Model)
+                        {
+                            <div class="content">
+                                <div>
+                                    <a href="@photo.FilePath">
+                                        <img src="@photo.ThumbFilePath" title="@photo.Picture.Title" alt="@photo.Picture.Title" class="thumb"/>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="~/Scripts/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="~/Scripts/photos.gallery.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var timerId = setInterval(goNext, 3000);
+
+                function goNext() {
+                    SwitchImage($outer_container.data("nextImage"));
+                    var $this = $("#outer_container a[href='" + $outer_container.data("nextImage") + "']");
+                    GetNextPrevImages($this);
+                    GetImageTitle($this);
+                }
+
+                $('button#play').click(function () {
+                    timerId = setInterval(goNext, 3000);
+                    $('button#play').hide();
+                    $('button#stop').show();
+                });
+
+                $('button#stop').click(function() {
+                    clearInterval(timerId);
+                    $('button#play').show();
+                    $('button#stop').hide();
+                });
+            });
+
+
+            $nextImageBtn.click(function (event) {
+                event.preventDefault();
+                SwitchImage($outer_container.data("nextImage"));
+                var $this = $("#outer_container a[href='" + $outer_container.data("nextImage") + "']");
+                GetNextPrevImages($this);
+                GetImageTitle($this);
+            });
+        </script>
+    </body>
+</html>

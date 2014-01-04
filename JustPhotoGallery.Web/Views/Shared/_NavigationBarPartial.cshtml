@@ -1,0 +1,37 @@
+﻿@using JustPhotoGallery.Web.Helpers
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">JustPhotoGallery</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("JustPhotoGallery", "Index", "Home", null, new { @class = "navbar-brand" })
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>@Html.NavBarLink(GlobalRes.Home, "Index", "Home", "glyphicon glyphicon-home")</li>
+                <li>@Html.NavBarLink(GlobalRes.UploadPhoto, "Upload", "Photo", "glyphicon glyphicon-upload")</li>
+                @if (ViewBag.SlideShow != null)
+                {
+                    <li>@Html.NavBarLink(GlobalRes.Slideshow, "Slideshow", "Photo", "glyphicon glyphicon-play", new {url = String.Format("{0}{1}", Request.Url.LocalPath, Request.Url.Query), query = Request.Url.Query}, new {@class = "btn btn-primary"})</li>
+                }
+            </ul>
+            @using (Html.BeginForm("Search", "Search", FormMethod.Get, new { @class = "navbar-form navbar-left" }))
+            {
+                    <div class="form-group">
+                        @Html.TextBox("searchString", null, new { @class = "form-control", placeholder = "Search", id = "navbar-search" })
+                    </div>
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+            }
+            <ul class="nav navbar-nav navbar-right">
+                @Html.Partial("_LoginPartial")
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div>
+</nav>

@@ -1,0 +1,78 @@
+﻿@model JustPhotoGallery.Domain.Entities.User
+@{
+    ViewBag.Title = GlobalRes.PhotoProfileTitle;
+}
+
+<div class="col-md-3">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">@GlobalRes.ProfileInfo</div>
+        </div>
+        <div class="panel-body list-group">
+            <div class="list-group-item thumbnail"><img src="@Path.Combine(GlobalRes.AvatarsFolder, Model.Avatar)" alt="....." /></div>
+            <div class="list-group-item caption">@GlobalRes.Username: @Model.UserName</div>
+            <div class="list-group-item">@GlobalRes.DateOfBirth: @Model.DateOfBirth.ToShortDateString()</div>
+            <div class="list-group-item">@GlobalRes.WithUsSince: @Model.RegistrationDate.ToShortDateString()</div>
+            <div class="list-group-item">@GlobalRes.Photos <span class="badge">@Html.Action("GetPhotosCount", "Photo", new { userId = Model.Id })</span></div>
+            <div class="list-group-item">@GlobalRes.Votes <span class="badge">@Html.Action("GetVotesCount", "Vote", new { userId = Model.Id })</span></div>
+
+        </div>
+    </div>
+    <br/>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">@GlobalRes.LastVotes</div>
+        </div>
+        <div class="panel-body list-group">
+            @Html.Action("ShowLastVotes", "Vote", new { userId = Model.Id })
+        </div>
+    </div>
+    <br/>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">@GlobalRes.Tags</div>
+        </div>
+        <div class="panel-body list-group">
+            @Html.Action("ShowUserTags", "Photo", new { userId = Model.Id })
+        </div>
+    </div>
+</div>
+<div class="col-md-9">
+    <div class="panel panel-primary">
+        <div class="panel-body" id="photos">
+            @Html.Action("ShowUserPhotos", "Photo", new { userId = Model.Id, page = 1 })
+        </div>
+        <div class="panel-footer" style="text-align: center;">
+            <button class="btn btn-primary" style="width: 300px; margin: 20px;" id="loadbutton">@GlobalRes.Load</button>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function getPhotos(page) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ShowUserPhotos", "Photo", new { userId = Model.Id })',
+                data: 'page=' + page,
+                dataType: "html",
+                success: function(result) {
+                    var domElement = $(result);
+                    $('#photos').animate({ height: '+=260px' }, 500);
+                    $('#photos').append(domElement);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $('#loadbutton').click(function () {
+                var page = $('.row #page').last().data('page') + 1;
+                if (page > 0) {
+                    getPhotos(page);
+                } else {
+                    $('#loadbutton').addClass('disabled').removeClass('btn-primary').addClass('btn-danger');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,128 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background: url(/Content/images/background.jpg) no-repeat fixed 100% 100%;
+}
+
+.main-container {
+    background-color: rgb(245, 245, 245);
+    background-color: rgba(245, 245, 245, 0.8);
+}
+
+.footer {
+    width: 95%;
+}
+
+.main-container .panel-body .list-group-item {
+    background-color: rgba(245, 245, 245, 0.8);
+}
+
+.main-container .panel-body .list-group-item:hover {
+    background-color: #eee8aa
+}
+
+.main-container .panel-body {
+    background-color: rgba(245, 245, 245, 0.8);
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.header {
+    text-align: center;
+}
+
+.photo {
+    text-align: center;
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 20px;
+}
+
+.badge > a {
+    color: white;
+    font-size: 14pt;
+    font-weight: 100;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.photo-description {
+    background: #F5F5F5;
+    padding: 20px;
+    margin: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 2px;
+}
+
+.voting {
+    text-align: center;
+}
+
+.votes {
+    margin: 20px;
+}
+
+.vote {
+    opacity: 0.6;
+    filter: alpha(opacity = 60)
+}
+
+.vote:hover {
+    opacity: 1.0;
+    filter: alpha(opacity = 100)
+}
+
+.slideshow {
+    display: none;
+}
+
+
+.grayscale {
+    -webkit-filter: grayscale(100%);
+}
+
+.sepia {
+    -webkit-filter: sepia(100%);
+}
+
+.contrast {
+    -webkit-filter: contrast(150%);
+}
+
+.photo-title {
+
+}
